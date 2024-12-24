@@ -37,7 +37,7 @@ calibrated and transformed to match the physical orientation of the sensor.
 
     # Example configuration entry
     msa3xx:
-      model: msa311
+      type: msa301
       range: 4G
       resolution: 12
       update_interval: 10s
@@ -51,13 +51,12 @@ text sensors with orientation information, and binary sensors for taps and movem
 
 Base Configuration:
 
-- **model** (**Required**, string): The model of the sensor. One of ``msa301`` or ``msa311``.
+- **type** (**Required**, string): Sensor type. Either ``msa301`` or ``msa311``.
 - **update_interval** (*Optional*, :ref:`config-time`): The interval for updating acceleration sensors.
   Defaults to ``10s``.
 - **range** (*Optional*, string): The range of the sensor measurements. One of ``2G``, ``4G``, ``8G``, ``16G``. 
   Defaults to ``2G``  which means it picks up accelerations between ``-2g`` and ``2g``.
-- **resolution** (*Optional*, int): The ADC resolution of the sensor in bits. ``msa311`` only supports 12-bits resolution. 
-  For ``msa301`` it can be one of ``8``, ``10``, ``12``, ``14``. Defaults to ``12`` for ``msa311``. and ``14`` for ``msa301``.
+- **resolution** (*Optional*, int): For ``msa301`` only. The ADC resolution of the sensor in bits. ``8``, ``10``, ``12``, ``14``. Defaults to ``14``.
 - **calibration** (*Optional*):
 
   - **offset_x** (*Optional*, float): X-axis zero position calibration, in m/s². From -4.5 to 4.5.  Defaults to ``0``.
@@ -152,7 +151,8 @@ This automation will be triggered when single tap is detected.
 .. code-block:: yaml
 
     msa3xx:
-      model: msa311
+      type: msa301
+      # ...
       on_tap:
         - then: 
             - logger.log: "Tapped"
@@ -166,7 +166,8 @@ This automation will be triggered when double tap is detected.
 .. code-block:: yaml
 
     msa3xx:
-      model: msa311
+      type: msa301
+      # ...
       on_double_tap:
         - then: 
             - logger.log: "Double tapped"
@@ -180,7 +181,8 @@ This automation will be triggered when device detects changes in motion.
 .. code-block:: yaml
 
     msa3xx:
-      model: msa311
+      type: msa301
+      # ...
       on_active:
         - then: 
             - logger.log: "Activity detected"
@@ -194,10 +196,36 @@ This automation will be triggered when device orientation is changed with respec
 .. code-block:: yaml
 
     msa3xx:
-      model: msa311
+      type: msa301
+      # ...
       on_orientation:
         - then: 
             - logger.log: "Orientation change detected"
+
+Using both MSA301 and MSA311 at the same time
+*********************************************
+
+Should you wish to use both sensors in the same configuration, you can do so by specifying ID for each sensor.
+
+.. code-block:: yaml
+    msa3xx:
+      - id: my_msa301_sensor
+        type: msa301
+        # ...
+      - id: my_msa311_sensor
+        type: msa311
+    
+    sensor:
+      - platform: msa3xx
+        msa3xx_id: my_msa311_sensor
+        acceleration_x: Accel X
+        acceleration_y: Accel Y
+        acceleration_z: Accel Z
+    
+    binary_sensor:
+      - platform: msa3xx
+        msa3xx_id: my_msa301_sensor
+        tap: Single tap
 
 
 See Also
