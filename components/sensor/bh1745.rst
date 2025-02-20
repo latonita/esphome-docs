@@ -1,4 +1,4 @@
-BH1745 RGB Colour Sensor
+BH1745 RGB Color Sensor
 ========================
 
 .. seo::
@@ -8,15 +8,15 @@ BH1745 RGB Colour Sensor
 
 The ``bh1745`` sensor platform allows you to use your BH1745 (BH1745NUC) RGB color sensors
 (`datasheet <https://github.com/latonita/datasheets-storage/blob/main/sensors/BH1745NUC_ROHM_S_A0001988929_1-2561519.pdf>`__,
-`Pimoroni`_), color temperature and illuminance sensors with ESPHome. The :ref:`I²C <i2c>` is
-required to be set up in your configuration for this sensor to work.
-
+`Pimoroni`_), color temperature sensor, and illuminance sensor with ESPHome. The :ref:`I²C <i2c>` is
+required to be set up in your configuration for this device to work.
+  
 
 .. figure:: images/bh1745-full.jpg
     :align: center
     :width: 50.0%
 
-    BH1745 RGB Colour Sensor
+    BH1745 RGB Color Sensor
 
 .. _Pimoroni: https://shop.pimoroni.com/products/bh1745-luminance-and-colour-sensor-breakout
 
@@ -38,9 +38,14 @@ required to be set up in your configuration for this sensor to work.
         blue_channel: Blue channel
         clear_channel: Clear channel
         illuminance: Illuminance
+
         # longer variant of sensor definition:
         color_temperature: 
           name: Color temperature
+
+        # specific to Pimoroni breakout board - switch for onboard LED
+        pimoroni_led_switch: LED
+
 
 
 Configuration variables
@@ -76,20 +81,26 @@ However, if you don't need any other options, you can just use shorthands like t
 Switch
 ------
 
-Pimoroni sensor breakout board has onboard LED which are connected to `interrupt` pin of the sensor.
-This component doesn't support interrupts, so LED can be easily controlled using the switch.
+Pimoroni sensor breakout board has two onboard LEDs to help with RGB detection. LEDs are connected to `interrupt` pin of the sensor.
+This component doesn't support interrupts, so illumination LED can be easily controlled using the switch.
+
+Can be defined as shorthand like in the initial example (``pimoroni_led_switch: LED``) or with all switch options like this:
 
 .. code-block:: yaml
 
-    switch: 
+    sensor:
       - platform: bh1745
-        bh1745_id: bh1745_mysensor_id
-        name: Onboard LED
+        id: bh1745_mysensor_id
+        #...address: 0x38
+        pimoroni_led_switch:
+          name: "Illumination LED"
+          # all other options from Switch
 
 
 See Also
 --------
 
 - :ref:`sensor-filters`
+- :ref:`switch`
 - :apiref:`bh1745/bh1745.h`
 - :ghedit:`Edit`
