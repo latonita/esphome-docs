@@ -35,30 +35,30 @@ This component also accepts a list of controllers if you want to implement multi
 
     # Example configuration entry - single controller
     spi:
-      clk_pin: GPIO14
-      mosi_pin: GPIO13
-      miso_pin: GPIO12
+      clk_pin: GPIOXX
+      mosi_pin: GPIOXX
+      miso_pin: GPIOXX
 
     # Example configuration entry - three controllers, one using quad SPI
     spi:
       - id: spi_bus0
-        clk_pin: GPIO18
-        mosi_pin: GPIO23
-        miso_pin: GPIO19
+        clk_pin: GPIOXX
+        mosi_pin: GPIOXX
+        miso_pin: GPIOXX
         interface: hardware
       - id: spi_bus1
-        clk_pin: GPIO14
-        mosi_pin: GPIO27
-        miso_pin: GPIO26
+        clk_pin: GPIOXX
+        mosi_pin: GPIOXX
+        miso_pin: GPIOXX
         interface: any
       - id: quad_spi_bus
         type: quad
-        clk_pin: GPIO47
+        clk_pin: GPIOXX
         data_pins:
-          - 40
-          - 41
-          - 42
-          - 43
+          - GPIOXX
+          - GPIOXX
+          - GPIOXX
+          - GPIOXX
 
 Configuration variables:
 ------------------------
@@ -117,16 +117,16 @@ Reads and writes on the device can be performed with lambdas. For example:
 .. code-block:: yaml
 
     spi:
-        clk_pin: GPIO14
-        mosi_pin: GPIO27
-        miso_pin: GPIO26
+        clk_pin: GPIOXX
+        mosi_pin: GPIOXX
+        miso_pin: GPIOXX
         interface: hardware
 
     spi_device:
         id: spidev
-        cs_pin: GPIO13
+        cs_pin: GPIOXX
         data_rate: 2MHz
-        mode: 3
+        spi_mode: 3
         bit_order: lsb_first
 
    on...:
@@ -143,7 +143,7 @@ Configuration variables:
 - **data_rate** (*Optional*): Set the data rate of the controller. One of ``80MHz``, ``40MHz``, ``20MHz``, ``10MHz``,
   ``5MHz``, ``4MHz``, ``2MHz``, ``1MHz`` (default), ``200kHz``, ``75kHz`` or ``1kHz``. A numeric value in Hz can alternatively
   be specified.
-- **mode** (*Optional*): Set the controller mode - one of ``mode0``, ``mode1``, ``mode2``, ``mode3``. The default is ``mode3``.
+- **spi_mode** (*Optional*): Set the controller mode - one of ``mode0``, ``mode1``, ``mode2``, ``mode3``. The default is ``mode3``.
   See table below for more information
 - **bit_order** (*Optional*): Set the bit order - choose one of ``msb_first`` (default) or ``lsb_first``.
 - **cs_pin** (*Optional*, :ref:`Pin Schema <config-pin_schema>`): The CS pin.
@@ -152,7 +152,7 @@ SPI modes:
 ----------
 
 SPI devices operate in one of four modes as per the table below. The choice of mode is dictated by the requirements
-of the speficic peripheral chip.
+of the specific peripheral chip.
 
 .. csv-table:: Supported Modes
     :header: "Mode", "Clock Idle Polarity", "Clock Phase", "Data shifted on", "Data sampled on"
